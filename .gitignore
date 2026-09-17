@@ -1,0 +1,10 @@
+.DS_Store
+.venv/
+.derivedData/
+*.xcresult/
+*.log
+*.pid
+__pycache__/
+*.egg-info/
+build/
+dist/

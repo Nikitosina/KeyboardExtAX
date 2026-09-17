@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "keyboard-ext-ax"
+version = "0.1.0"
+description = "Accessibility snapshots of active iOS keyboard extensions in Simulator"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Nikitosina"}]
+requires-python = ">=3.10"
+dependencies = ["mcp>=2,<3"]
+keywords = ["accessibility", "ios", "keyboard", "mcp", "simulator", "xctest"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: MacOS X",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Software Development :: Testing",
+]
+
+[project.urls]
+Homepage = "https://github.com/Nikitosina/KeyboardExtAX"
+Repository = "https://github.com/Nikitosina/KeyboardExtAX"
+Issues = "https://github.com/Nikitosina/KeyboardExtAX/issues"
+
+[project.scripts]
+keyboard-ext-ax = "keyboard_ext_ax.cli:main"
+keyboard-ext-ax-mcp = "keyboard_ext_ax.mcp_server:main"
+
+[tool.setuptools.packages.find]
+include = ["keyboard_ext_ax*"]
+
+[tool.setuptools.package-data]
+keyboard_ext_ax = [
+    "harness/project.yml",
+    "harness/Host/*.swift",
+    "harness/UITests/*.swift",
+    "harness/KeyboardExtAX.xcodeproj/project.pbxproj",
+    "harness/KeyboardExtAX.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+    "harness/KeyboardExtAX.xcodeproj/xcshareddata/xcschemes/*.xcscheme",
+]
