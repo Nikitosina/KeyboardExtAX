@@ -2,6 +2,8 @@
 
 # KeyboardExtAX
 
+![KeyboardExtAX accessibility snapshot illustration](.github/assets/keyboard-ext-ax-header.png)
+
 Fast, read-only accessibility snapshots of active third-party iOS keyboard extensions in Simulator.
 
 ## Why this project exists
