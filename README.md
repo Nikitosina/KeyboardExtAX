@@ -69,30 +69,39 @@ If multiple Xcode installations are present, select one with `DEVELOPER_DIR` or 
 export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
 ```
 
-## Installation from source
+## Installation
 
-Clone the repository:
+### Homebrew (recommended)
+
+```sh
+brew install nikitosina/tap/keyboard-ext-ax
+```
+
+### PyPI with uv
+
+Install both executables permanently:
+
+```sh
+uv tool install keyboard-ext-ax
+```
+
+Or run the MCP server without a persistent installation:
+
+```sh
+uvx keyboard-ext-ax mcp
+```
+
+### From source
 
 ```sh
 git clone https://github.com/Nikitosina/KeyboardExtAX.git
 cd KeyboardExtAX
-```
-
-Create an isolated environment and install the CLI plus MCP support:
-
-```sh
 python3 -m venv .venv
 .venv/bin/python -m pip install -e .
+source .venv/bin/activate
 ```
 
-This provides two executables:
-
-```text
-.venv/bin/keyboard-ext-ax
-.venv/bin/keyboard-ext-ax-mcp
-```
-
-The MCP server can be started with either `keyboard-ext-ax-mcp` or `keyboard-ext-ax mcp`.
+Every installation provides `keyboard-ext-ax` and `keyboard-ext-ax-mcp`. The MCP server can be started with either `keyboard-ext-ax-mcp` or `keyboard-ext-ax mcp`.
 
 The bundled Xcode project is ready to use. XcodeGen is needed only when modifying `keyboard_ext_ax/harness/project.yml`.
 
@@ -104,7 +113,7 @@ Configure `keyboard-ext-ax-mcp` as a stdio MCP server. Most MCP clients use a co
 {
   "mcpServers": {
     "KeyboardExtAX": {
-      "command": "/absolute/path/to/KeyboardExtAX/.venv/bin/keyboard-ext-ax-mcp",
+      "command": "keyboard-ext-ax-mcp",
       "env": {
         "DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
       }
@@ -112,6 +121,8 @@ Configure `keyboard-ext-ax-mcp` as a stdio MCP server. Most MCP clients use a co
   }
 }
 ```
+
+If the MCP client does not inherit your shell `PATH`, replace the command with the absolute path printed by `command -v keyboard-ext-ax-mcp`.
 
 The server exposes one tool:
 
@@ -139,7 +150,7 @@ The result is returned as structured MCP content. The MCP layer delegates direct
 With the client text field focused and the requested keyboard visible:
 
 ```sh
-.venv/bin/keyboard-ext-ax snapshot \
+keyboard-ext-ax snapshot \
   --simulator <SIMULATOR_UDID> \
   --extension com.example.keyboard.extension
 ```
@@ -147,7 +158,7 @@ With the client text field focused and the requested keyboard visible:
 Write the result to a file:
 
 ```sh
-.venv/bin/keyboard-ext-ax snapshot \
+keyboard-ext-ax snapshot \
   --simulator <SIMULATOR_UDID> \
   --extension com.example.keyboard.extension \
   --output /tmp/keyboard.json
@@ -156,7 +167,7 @@ Write the result to a file:
 Use `--raw` to retain the nested tree and original XCTest descriptions:
 
 ```sh
-.venv/bin/keyboard-ext-ax snapshot \
+keyboard-ext-ax snapshot \
   --simulator <SIMULATOR_UDID> \
   --extension com.example.keyboard.extension \
   --raw
@@ -273,25 +284,25 @@ Always refresh after Shift, globe, numbers/symbols, Return, vertical navigation,
 Inspect all cached simulator sessions:
 
 ```sh
-.venv/bin/keyboard-ext-ax status
+keyboard-ext-ax status
 ```
 
 Inspect one simulator:
 
 ```sh
-.venv/bin/keyboard-ext-ax status --simulator <SIMULATOR_UDID>
+keyboard-ext-ax status --simulator <SIMULATOR_UDID>
 ```
 
 Stop one runner:
 
 ```sh
-.venv/bin/keyboard-ext-ax stop --simulator <SIMULATOR_UDID>
+keyboard-ext-ax stop --simulator <SIMULATOR_UDID>
 ```
 
 Stop every runner:
 
 ```sh
-.venv/bin/keyboard-ext-ax stop --all
+keyboard-ext-ax stop --all
 ```
 
 One runner is maintained per simulator. Multiple simulators can be queried concurrently; each receives an independent port, state file, log, and result bundle.
@@ -419,42 +430,15 @@ The host app included in this repository is XCTest scaffolding. Snapshot mode do
 
 ## Distribution
 
-Source installation is currently the supported path. The wheel and source distribution bundle the Xcode project, host source, and UI-test source under `keyboard_ext_ax/harness`, so installed packages do not depend on a repository checkout.
+KeyboardExtAX is published through:
 
-The planned public distribution has two layers:
+- [PyPI](https://pypi.org/project/keyboard-ext-ax/) as the canonical Python package;
+- [`Nikitosina/homebrew-tap`](https://github.com/Nikitosina/homebrew-tap) as the recommended macOS installation;
+- the [official MCP Registry](https://registry.modelcontextprotocol.io/) as `io.github.Nikitosina/keyboard-ext-ax`.
 
-1. **PyPI** as the canonical Python package and MCP Registry package.
-2. **Homebrew** as the recommended macOS installation experience.
+The wheel and source distribution bundle the Xcode project, host source, and UI-test source under `keyboard_ext_ax/harness`, so installed packages do not depend on a repository checkout. The Homebrew formula installs the application and pinned Python dependencies into an isolated virtual environment.
 
-Planned consumer commands are:
-
-```sh
-# Run the MCP server without a persistent installation
-uvx keyboard-ext-ax mcp
-
-# Or install both executables permanently
-uv tool install keyboard-ext-ax
-```
-
-and:
-
-```sh
-brew install nikitosina/tap/keyboard-ext-ax
-```
-
-These commands will be enabled after the first packages are published.
-
-The Homebrew formula should install the application into an isolated Python virtual environment with all dependencies declared as formula resources. A custom [`Nikitosina/homebrew-tap`](https://github.com/Nikitosina/homebrew-tap) can provide the formula immediately; bottles can later make installation fully prebuilt for supported macOS architectures.
-
-The XCTest harness should still be built once on the consumer's machine and cached. Distributing precompiled `.xctestrun` products is intentionally avoided because they are coupled to Xcode versions, architectures, SDKs, and build paths.
-
-After the PyPI release, the MCP server can be listed in the official MCP Registry under:
-
-```text
-io.github.Nikitosina/keyboard-ext-ax
-```
-
-The registry provides discovery metadata; PyPI and Homebrew remain responsible for delivering the software.
+The XCTest harness is still compiled once on the consumer's machine and cached. Precompiled `.xctestrun` products are intentionally not distributed because they are coupled to Xcode versions, architectures, SDKs, and build paths.
 
 ## Development
 
