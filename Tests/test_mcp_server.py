@@ -33,7 +33,7 @@ class MCPServerTests(unittest.IsolatedAsyncioTestCase):
             )
 
         self.assertEqual([tool.name for tool in tools.tools], ["keyboard_snapshot"])
-        self.assertEqual(result.meta["io.modelcontextprotocol/serverInfo"]["version"], "0.1.0")
+        self.assertEqual(result.meta["io.modelcontextprotocol/serverInfo"]["version"], "0.1.1")
         self.assertEqual(
             result.structured_content,
             {

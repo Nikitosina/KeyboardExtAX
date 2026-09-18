@@ -32,7 +32,7 @@ Create the public repository `Nikitosina/homebrew-tap`. The first formula is add
 4. Run:
 
    ```sh
-   python3 scripts/check-release-version.py 0.1.0
+   VERSION=$(python3 scripts/check-release-version.py)
    python3 -m unittest discover -s Tests -v
    python3 -m build
    python3 -m twine check dist/*
@@ -43,8 +43,8 @@ Create the public repository `Nikitosina/homebrew-tap`. The first formula is add
 7. Create and push the tag:
 
    ```sh
-   git tag v0.1.0
-   git push origin main v0.1.0
+   git tag "v$VERSION"
+   git push origin main "v$VERSION"
    ```
 
 The `Release` workflow then:

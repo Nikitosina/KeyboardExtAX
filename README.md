@@ -1,4 +1,4 @@
-<!-- mcp-name: io.github.nikitosina/keyboard-ext-ax -->
+<!-- mcp-name: io.github.Nikitosina/keyboard-ext-ax -->
 
 # KeyboardExtAX
 
@@ -451,7 +451,7 @@ The XCTest harness should still be built once on the consumer's machine and cach
 After the PyPI release, the MCP server can be listed in the official MCP Registry under:
 
 ```text
-io.github.nikitosina/keyboard-ext-ax
+io.github.Nikitosina/keyboard-ext-ax
 ```
 
 The registry provides discovery metadata; PyPI and Homebrew remain responsible for delivering the software.

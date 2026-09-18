@@ -2,7 +2,7 @@
 
 `keyboard-ext-ax.rb.template` is the source formula staged for the first PyPI release.
 
-After PyPI publishes `0.1.0`:
+After PyPI publishes a release:
 
 1. Copy the exact source-distribution URL from PyPI.
 2. Compute its SHA-256 checksum.
